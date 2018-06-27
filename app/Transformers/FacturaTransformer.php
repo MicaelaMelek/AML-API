@@ -24,8 +24,10 @@ class FacturaTransformer extends TransformerAbstract
             'subtotal'      =>  $factura->subtotal,
             'iva'           =>  $factura->iva,
             'total'         =>  $factura->total,
-            'id_empresa'    =>  $factura->id_empresa,
-            'id_cliente'    =>  $factura->id_cliente
+            'empresa_id'    =>  $factura->empresa_id,
+            'cliente_id'    =>  $factura->cliente_id,
+            'created_at'    =>  $factura->created_at,
+            'updated_at'    =>  $factura->updated_at,
         ];
     }
 }
