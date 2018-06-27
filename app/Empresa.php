@@ -31,35 +31,40 @@ class Empresa extends Model
     /**
      * @param $query
      * @param $nombre
-     * @return bool
+     * @return Empresa
      */
     public function scopeWhereNombre($query, $nombre)
     {
         if (empty($nombre)) {
-            return false;
+            return $this;
         }
 
-        return $query->where('nombre', 'LIKE', $nombre);
+        return $query->where('nombre', 'LIKE', "%$nombre%");
     }
 
+    /**
+     * @param $query
+     * @param $razonSocial
+     * @return Empresa
+     */
     public function scopeWhereRazonSocial($query, $razonSocial)
     {
         if (empty($razonSocial)) {
-            return false;
+            return $this;
         }
 
-        return $query->where('nombre', 'LIKE', $razonSocial);
+        return $query->where('razon_social', 'LIKE', "%$razonSocial%");
     }
 
     /**
      * @param $query
      * @param $cuit
-     * @return bool
+     * @return Empresa
      */
     public function scopeWhereCuit($query, $cuit)
     {
         if (empty($cuit)) {
-            return false;
+            return $this;
         }
 
         return $query->where('cuit', str_replace('-', '', $cuit));
