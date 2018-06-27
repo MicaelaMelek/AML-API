@@ -15,6 +15,9 @@ class Cliente extends Model
 
     protected $guarded = ['empresa_id'];
 
+    protected $dates = ['created_at', 'updated_at'];
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
