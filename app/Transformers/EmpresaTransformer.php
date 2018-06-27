@@ -22,7 +22,9 @@ class EmpresaTransformer extends TransformerAbstract
         return [
             'nombre'        =>  $empresa->nombre,
             'razon_social'  =>  $empresa->razon_social,
-            'cuit'          =>  $empresa->cuit
+            'cuit'          =>  $empresa->cuit,
+            'created_at'    =>  $empresa->created_at,
+            'updated_at'    =>  $empresa->updated_at,
         ];
     }
 }
