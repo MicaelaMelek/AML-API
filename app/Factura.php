@@ -12,6 +12,10 @@ class Factura extends Model
 {
     protected $fillable = ['numero', 'subtotal', 'iva', 'total', 'empresa_id', 'cliente_id'];
 
+    protected $guarded = ['empresa_id', 'cliente_id'];
+
+    protected $dates = ['created_at', 'updated_at'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -31,12 +35,12 @@ class Factura extends Model
     /**
      * @param $query
      * @param $numero
-     * @return bool
+     * @return Factura
      */
     public function scopeWhereNumero($query, $numero)
     {
         if (empty($numero)) {
-            return false;
+            return $this;
         }
 
         return $query->where('numero', $numero);
@@ -45,12 +49,12 @@ class Factura extends Model
     /**
      * @param $query
      * @param $subTotal
-     * @return bool
+     * @return Factura
      */
     public function scopeWhereSubtotal($query, $subTotal)
     {
         if (empty($subTotal)) {
-            return false;
+            return $this;
         }
 
         return $query->where('subtotal', $subTotal);
@@ -59,12 +63,12 @@ class Factura extends Model
     /**
      * @param $query
      * @param $iva
-     * @return bool
+     * @return Factura
      */
     public function scopeWhereIVA($query, $iva)
     {
         if (empty($iva)) {
-            return false;
+            return $this;
         }
 
         return $query->where('iva', $iva);
@@ -78,7 +82,7 @@ class Factura extends Model
     public function scopeWhereTotal($query, $total)
     {
         if (empty($total)) {
-            return false;
+            return $this;
         }
 
         return $query->where('total', $total);
@@ -86,29 +90,34 @@ class Factura extends Model
 
     /**
      * @param $query
-     * @param $empresa
-     * @return bool
+     * @param $empresaNombre
+     * @return Factura
      */
-    public function scopeWhereEmpresa($query, $empresa)
+    public function scopeWhereEmpresa($query, $empresaNombre)
     {
-        if (!empty($empresa)) {
-            return $query->whereHas('empresa', function ($query) use ($empresa) {
-                return $query->where('nombre', $empresa);
+        if (!empty($empresaNombre)) {
+            return $query->whereHas('empresa', function ($query) use ($empresaNombre) {
+                return $query->where('nombre', 'LIKE', "%$empresaNombre%");
             });
         }
 
-        return false;
+        return $this;
     }
 
-    public function scopeWhereCliente($query, $cliente)
+    /**
+     * @param $query
+     * @param $clienteNombre
+     * @return Factura
+     */
+    public function scopeWhereCliente($query, $clienteNombre)
     {
         if (!empty($cliente)) {
-            return $query->whereHas('cliente', function ($query) use ($cliente) {
-                return $query->where('nombre', $cliente);
+            return $query->whereHas('cliente', function ($query) use ($clienteNombre) {
+                return $query->where('nombre', 'LIKE', "%$clienteNombre%");
             });
         }
 
-        return false;
+        return $this;
     }
 
 }
