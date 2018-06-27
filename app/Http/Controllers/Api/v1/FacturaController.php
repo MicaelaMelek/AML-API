@@ -59,8 +59,6 @@ class FacturaController extends ApiController
         $validations = $factoryValidation->make($request->all(), [
             'numero'        =>  'required',
             'subtotal'      =>  'required',
-            'iva'           =>  'required',
-            'total'         =>  'required',
             'empresa_id'    =>  'required|exists:empresas,id',
             'cliente_id'    =>  'required|exists:clientes,id',
         ]);
@@ -69,14 +67,15 @@ class FacturaController extends ApiController
             return $this->respondValidationFail($validations->errors());
         }
 
+        /** @var Factura $factura */
         $factura = Factura::create([
             'numero'        =>  $request->get('numero'),
             'subtotal'      =>  $request->get('subtotal'),
-            'iva'           =>  $request->get('iva'),
-            'total'         =>  $request->get('total'),
             'empresa_id'    =>  $request->get('empresa_id'),
             'cliente_id'    =>  $request->get('cliente_id')
         ]);
+
+        $factura->refresh();
 
         return $this->respondItem($factura, $this->facturaTransformer);
     }
@@ -108,15 +107,18 @@ class FacturaController extends ApiController
     public function update(Request $request, $id)
     {
         try {
+            /** @var Factura $factura */
             $factura = Factura::findOrFail($id);
             $factura->update([
+                'total' => $request->get('total')
             ]);
+            $factura->refresh();
             return $this->respondItem($factura, $this->facturaTransformer);
         } catch (ModelNotFoundException $exception) {
             return $this->respondNotFound('No se encontro la factura');
         } catch (QueryException $queryException) {
-            Log::info('Error con la factura '.$queryException->getMessage());
-            return $this->respondInternalError('Intente nuevamente más tarde');
+            Log::info('Error con la query ' . $queryException->getMessage());
+            return $this->respondBadRequest('Parámetro inválido');
         }
     }
 
