@@ -23,7 +23,9 @@ class ClienteTransformer extends TransformerAbstract
             'nombre'        =>  $cliente->nombre,
             'cuit'          =>  $cliente->cuit,
             'cuil'          =>  $cliente->cuil,
-            'empresa_id'    =>  $cliente->empresa_id
+            'empresa_id'    =>  $cliente->empresa_id,
+            'created_at'    =>  $cliente->created_at,
+            'updated_at'    =>  $cliente->updated_at,
         ];
     }
 }
