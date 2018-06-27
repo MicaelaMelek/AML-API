@@ -13,6 +13,8 @@ class Cliente extends Model
 {
     protected $fillable = ['nombre', 'cuit', 'cuil', 'empresa_id'];
 
+    protected $guarded = ['empresa_id'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -32,26 +34,26 @@ class Cliente extends Model
     /**
      * @param $query
      * @param $nombre
-     * @return bool
+     * @return Cliente
      */
     public function scopeWhereNombre($query, $nombre)
     {
         if (empty($nombre)) {
-            return false;
+            return $this;
         }
 
-        return $query->where('nombre', 'LIKE', $nombre);
+        return $query->where('nombre', 'LIKE', "%$nombre%");
     }
 
     /**
      * @param $query
      * @param $cuil
-     * @return bool
+     * @return Cliente
      */
     public function scopeWhereCuil($query, $cuil)
     {
         if (empty($cuil)) {
-            return false;
+            return $this;
         }
 
         return $query->where('cuil', str_replace('-', '', $cuil));
@@ -60,12 +62,12 @@ class Cliente extends Model
     /**
      * @param $query
      * @param $cuit
-     * @return bool
+     * @return Cliente
      */
     public function scopeWhereCuit($query, $cuit)
     {
         if (empty($cuit)) {
-            return false;
+            return $this;
         }
 
         return $query->where('cuit', str_replace('-', '', $cuit));
@@ -74,16 +76,16 @@ class Cliente extends Model
     /**
      * @param $query
      * @param $empresa
-     * @return bool
+     * @return Cliente
      */
-    public function scopeWhereEmpresa($query, $empresa)
+    public function scopeWhereEmpresa($query, $empresaNombre)
     {
-        if (!empty($empresa)) {
-            return $query->whereHas('empresa', function ($query) use ($empresa) {
-                return $query->where('nombre', $empresa);
+        if (!empty($empresaNombre)) {
+            return $query->whereHas('empresa', function ($query) use ($empresaNombre) {
+                return $query->where('nombre', 'LIKE' ,"%$empresaNombre%");
             });
         }
 
-        return false;
+        return $this;
     }
 }
