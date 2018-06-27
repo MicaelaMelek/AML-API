@@ -94,8 +94,16 @@ class EmpresaController extends ApiController
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, Factory $factoryValidation)
     {
+        $validations = $factoryValidation->make($request->all(), [
+            'nombre' => 'required|max:150',
+        ]);
+
+        if ($validations->fails()) {
+            return $this->respondValidationFail($validations->errors());
+        }
+
         try {
             $empresa = Empresa::findOrFail($id);
             $empresa->update([
@@ -105,8 +113,8 @@ class EmpresaController extends ApiController
         } catch (ModelNotFoundException $exception) {
             return $this->respondNotFound('No se encontro la empresa');
         } catch (QueryException $queryException) {
-            Log::info('Error con la empresa '.$queryException->getMessage());
-            return $this->respondInternalError('Intente nuevamente más tarde');
+            Log::info('Error con la query ' . $queryException->getMessage());
+            return $this->respondBadRequest('Parámetro inválido');
         }
     }
 
