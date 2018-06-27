@@ -12,6 +12,9 @@ class Empresa extends Model
 {
     protected $fillable = ['nombre', 'razon_social', 'cuit'];
 
+    protected $dates = ['created_at', 'updated_at'];
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
