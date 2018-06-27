@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['namespace'=>'api'], function() {
+Route::group(['namespace'=>'Api\v1'], function() {
     $this->resource('/clientes', 'ClienteController', ['except' => ['create', 'edit', 'destroy']]);
     $this->resource('/empresas', 'EmpresaController', ['except' => ['create', 'edit', 'destroy']]);
     $this->resource('/facturas', 'FacturaController', ['except' => ['create', 'edit', 'destroy']]);
