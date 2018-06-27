@@ -39,7 +39,7 @@ class ClienteController extends ApiController
             ->whereCuil($request->get('cuil'))
             ->whereCuit($request->get('cuit'))
             ->whereEmpresa($request->get('empresa'))
-            ->pagina(15);
+            ->paginate(15);
 
         return $this->respondCollection($clientes, $this->clienteTransformer);
     }
@@ -57,7 +57,7 @@ class ClienteController extends ApiController
             'nombre'     => 'required|max:150',
             'cuil'       => 'required_without:cuit',
             'cuit'       => 'required_without:cuil',
-            'empresa_id' => 'required|exists:empresa:id'
+            'empresa_id' => 'required|exists:empresas,id'
         ]);
 
         if ($validations->fails()) {
@@ -109,8 +109,8 @@ class ClienteController extends ApiController
         } catch (ModelNotFoundException $exception) {
             return $this->respondNotFound('No se encontro el cliente');
         } catch (QueryException $queryException) {
-            Log::info('Error con el cliente '.$queryException->getMessage());
-            return $this->respondInternalError('Intente nuevamente más tarde');
+            Log::info('Error con la query ' . $queryException->getMessage());
+            return $this->respondBadRequest('Parámetro inválido');
         }
     }
 
