@@ -42,7 +42,7 @@ class FacturaController extends ApiController
             ->whereSubtotal($request->get('subtotal'))
             ->whereIVA($request->get('iva'))
             ->whereTotal($request->get('total'))
-            ->paginate(15);
+            ->paginate(5);
 
         return $this->respondCollection($factura, $this->facturaTransformer);
     }
@@ -57,6 +57,7 @@ class FacturaController extends ApiController
      */
     public function store(Request $request, Factory $factoryValidation)
     {
+        Log::info($request->all());
         $validations = $factoryValidation->make($request->all(), [
             'numero'        =>  'required',
             'subtotal'      =>  'required',
@@ -65,6 +66,7 @@ class FacturaController extends ApiController
         ]);
 
         if ($validations->fails()) {
+            Log::info($validations->errors());
             return $this->respondValidationFail($validations->errors());
         }
 
@@ -111,7 +113,7 @@ class FacturaController extends ApiController
             /** @var Factura $factura */
             $factura = Factura::findOrFail($id);
             $factura->update([
-                'total' => $request->get('total')
+                'subtotal' => $request->get('subtotal')
             ]);
             $factura->refresh();
             return $this->respondItem($factura, $this->facturaTransformer);
