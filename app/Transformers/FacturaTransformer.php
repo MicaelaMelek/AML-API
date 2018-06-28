@@ -20,6 +20,7 @@ class FacturaTransformer extends TransformerAbstract
     public function transform(Factura $factura)
     {
         return [
+            'id'            =>  $factura->id,
             'numero'        =>  $factura->numero,
             'subtotal'      =>  $factura->subtotal,
             'iva'           =>  $factura->iva,

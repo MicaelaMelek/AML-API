@@ -20,6 +20,7 @@ class EmpresaTransformer extends TransformerAbstract
     public function transform(Empresa $empresa)
     {
         return [
+            'id'            =>  $empresa->id,
             'nombre'        =>  $empresa->nombre,
             'razon_social'  =>  $empresa->razon_social,
             'cuit'          =>  $empresa->cuit,
