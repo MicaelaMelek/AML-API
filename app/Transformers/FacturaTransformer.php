@@ -26,6 +26,8 @@ class FacturaTransformer extends TransformerAbstract
             'total'         =>  $factura->total,
             'empresa_id'    =>  $factura->empresa_id,
             'cliente_id'    =>  $factura->cliente_id,
+            'empresa'       =>  $factura->empresa,
+            'cliente'       =>  $factura->cliente,
             'created_at'    =>  $factura->created_at,
             'updated_at'    =>  $factura->updated_at,
         ];
