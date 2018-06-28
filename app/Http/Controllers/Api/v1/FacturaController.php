@@ -35,7 +35,8 @@ class FacturaController extends ApiController
      */
     public function index(Request $request)
     {
-        $factura = Factura::whereNumero($request->get('numero'))
+        $factura = Factura::with(['empresa', 'cliente'])
+            ->whereNumero($request->get('numero'))
             ->whereEmpresa($request->get('empresa'))
             ->whereCliente($request->get('cliente'))
             ->whereSubtotal($request->get('subtotal'))
